@@ -13,8 +13,8 @@ func NewRequest(config RequestConfig) *Request {
 
 type Request struct {
 	requestMap map[string]interface{}
-	response   Response
-	config     RequestConfig
+	Resp Response
+	config RequestConfig
 }
 
 func (request *Request) SetRequestObject(object interface{}) error {
@@ -43,7 +43,7 @@ func (request *Request) Call() error {
 		return errors.New("Response status is not 200")
 	}
 
-	erpcResp := &request.response
+	erpcResp := &request.Resp
 	r.ToJSON(erpcResp)
 	erpcResp.Resp = r
 
@@ -53,12 +53,9 @@ func (request *Request) Call() error {
 	return nil
 }
 
-func (request *Request) Response() Response {
-	return request.response
-}
 
 func (request *Request) IsOk() bool {
-	return IsStatusOK(request.response.Status)
+	return IsStatusOK(request.Resp.Status)
 }
 
 func (request *Request) validate() {}
