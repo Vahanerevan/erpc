@@ -64,14 +64,9 @@ func (request *Request) Call(path ...string) (*Response, error) {
 	if false == request.IsOk() {
 		return errors.New("Request failed on remote")
 	}
-	return responseData.Resp, nil
+	return responseData, nil
 }
 
-func (request *Request) IsOk() bool {
-	return IsStatusOK(request.Resp.Status)
-}
-func (request *Request) IsFail() bool {
-	return false == IsStatusOK(request.Resp.Status)
-}
+
 
 func (request *Request) validate() {}

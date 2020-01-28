@@ -10,3 +10,10 @@ type Response struct {
 	IStatus
 	*req.Resp
 }
+
+func (response *Response) IsOk() bool {
+	return IsStatusOK(response.Status)
+}
+func (response *Response) IsFail() bool {
+	return false == IsStatusOK(response.Status)
+}
