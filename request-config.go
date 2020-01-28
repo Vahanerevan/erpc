@@ -1,6 +1,6 @@
 package erpc
 
-type RequestConfig struct {
+type Config struct {
 	Secret string `json:"secret"`
 	URL    string `json:"url"`
 }

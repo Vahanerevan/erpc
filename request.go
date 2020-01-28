@@ -13,25 +13,25 @@ type RequestDto struct {
 	Hash string      `json:"hash"`
 }
 
-func NewRequest(config RequestConfig) *Request {
+func NewRequest(config Config) *Request {
 	return &Request{config: config}
 }
 
 type Request struct {
 	requestData RequestDto
 	Resp        Response
-	config      RequestConfig
+	config      Config
 }
 
-func (request *Request) SetRequestObject(object interface{}) error {
-	bytes, err := json.Marshal(object)
+func (request *Request) SetRequestObject(dataObject interface{}) error {
+	bytes, err := json.Marshal(dataObject)
 	if nil != err {
 		return err
 	}
 	hash := HashCalculate(string(bytes), request.config.Secret)
 
 	request.requestData = RequestDto{
-		Data: object,
+		Data: dataObject,
 		Hash: hash,
 	}
 	return err
