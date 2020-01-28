@@ -8,6 +8,6 @@ import (
 func HashCalculate(data string, secret string) string {
 	text := []byte((data + secret))
 	hashCalculator := md5.New()
-	hashCalculator.Write([]byte(text))
+	hashCalculator.Write(text)
 	return hex.EncodeToString(hashCalculator.Sum(nil))
 }
