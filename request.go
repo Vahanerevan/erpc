@@ -37,7 +37,7 @@ func (request *Request) SetRequestObject(dataObject interface{}) error {
 	return err
 }
 
-func (request *Request) Call(path ...string) error {
+func (request *Request) Call(path ...string) (*Response, error) {
 
 	header := req.Header{
 		"Content-Type": "application/json",
@@ -64,11 +64,14 @@ func (request *Request) Call(path ...string) error {
 	if false == request.IsOk() {
 		return errors.New("Request failed on remote")
 	}
-	return nil
+	return responseData.Resp, nil
 }
 
 func (request *Request) IsOk() bool {
 	return IsStatusOK(request.Resp.Status)
+}
+func (request *Request) IsFail() bool {
+	return false == IsStatusOK(request.Resp.Status)
 }
 
 func (request *Request) validate() {}
