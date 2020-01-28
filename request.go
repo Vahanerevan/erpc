@@ -42,7 +42,6 @@ func (request *Request) Call(path ...string) error {
 	header := req.Header{
 		"Content-Type": "application/json",
 	}
-
 	pathList := []string{request.config.URL}
 	pathList = append(pathList, path...)
 	uri := strings.Join(pathList, "/")
