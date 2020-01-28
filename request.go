@@ -37,8 +37,8 @@ func (request *Request) SetRequestObject(dataObject interface{}) error {
 	return err
 }
 
-func (request *Request) Call(path ...string) (*Response, error) {
-
+func (request *Request) Call(requestObject interface{}, path ...string) (*Response, error) {
+	request.SetRequestObject(requestObject)
 	header := req.Header{
 		"Content-Type": "application/json",
 	}
