@@ -10,7 +10,7 @@ import (
 
 type RequestDto struct {
 	Data interface{} `json:"data"`
-	Hash string `json:"hash"`
+	Hash string      `json:"hash"`
 }
 
 func NewRequest(config RequestConfig) *Request {
