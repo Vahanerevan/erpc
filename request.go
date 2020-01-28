@@ -5,6 +5,7 @@ import (
 	"errors"
 	"github.com/imroc/req"
 	"net/http"
+	"strings"
 )
 
 func NewRequest(config RequestConfig) *Request {
@@ -13,8 +14,8 @@ func NewRequest(config RequestConfig) *Request {
 
 type Request struct {
 	requestMap map[string]interface{}
-	Resp Response
-	config RequestConfig
+	Resp       Response
+	config     RequestConfig
 }
 
 func (request *Request) SetRequestObject(object interface{}) error {
@@ -30,11 +31,14 @@ func (request *Request) SetRequestObject(object interface{}) error {
 	return err
 }
 
-func (request *Request) Call() error {
+func (request *Request) Call(path ...string) error {
 	header := req.Header{
 		"Content-Type": "application/json",
 	}
-	r, err := req.Post(request.config.URL, header, req.BodyJSON(&request.requestMap))
+	pathList := []string{request.config.URL}
+	pathList = append(pathList, path...)
+	uri := strings.Join(pathList, "/")
+	r, err := req.Post(uri, header, req.BodyJSON(&request.requestMap))
 	if nil != err {
 		return err
 	}
@@ -52,7 +56,6 @@ func (request *Request) Call() error {
 	}
 	return nil
 }
-
 
 func (request *Request) IsOk() bool {
 	return IsStatusOK(request.Resp.Status)
