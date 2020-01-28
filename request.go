@@ -48,25 +48,20 @@ func (request *Request) Call(path ...string) (*Response, error) {
 	r, err := req.Post(uri, header, req.BodyJSON(&request.requestData))
 
 	if nil != err {
-		return err
+		return nil, err
 	}
 
 	resp := r.Response()
 
 	if resp.StatusCode != http.StatusOK {
-		return errors.New("Response status is not 200")
+		return nil, errors.New("Response status is not 200")
 	}
 
 	responseData := &request.Resp
 	r.ToJSON(responseData)
 	responseData.Resp = r
 
-	if false == request.IsOk() {
-		return errors.New("Request failed on remote")
-	}
 	return responseData, nil
 }
-
-
 
 func (request *Request) validate() {}
