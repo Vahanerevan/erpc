@@ -37,6 +37,6 @@ func (receiver *Receiver) ToString() string {
 	return string(receiver.data)
 }
 
-func (receiver *Receiver) ToJSON(object interface{}) {
-	json.Unmarshal(receiver.data, object)
+func (receiver *Receiver) ToJSON(object interface{}) error {
+	return json.Unmarshal(receiver.data, object)
 }
