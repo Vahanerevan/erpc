@@ -3,6 +3,7 @@ package erpc
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 )
 
 func ReceiveBytes(bytes []byte) *Receiver {
@@ -30,6 +31,8 @@ func (receiver *Receiver) Handle(bytes []byte) error {
 	if nil != err {
 		return err
 	}
+
+	fmt.Println(request)
 	receiver.hash = request.Hash
 	receiver.data = request.Data
 
@@ -46,19 +49,19 @@ func (receiver *Receiver) ToString() (string, error) {
 }
 
 func (receiver *Receiver) ToBytes() ([]byte, error) {
-	dataString, err := json.Marshal(receiver.data)
+	bytes, err := json.Marshal(receiver.data)
 	if nil != err {
 		return nil, err
 	}
-	return dataString, nil
+	return bytes, nil
 }
 
 func (receiver *Receiver) ToJSON(object interface{}) error {
-	str, err := receiver.ToBytes()
+	bytes, err := receiver.ToBytes()
 	if nil != err {
 		return err
 	}
-	return json.Unmarshal(str, object)
+	return json.Unmarshal(bytes, object)
 }
 
 func (receiver *Receiver) Validate() error {
