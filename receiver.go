@@ -5,7 +5,7 @@ import (
 	"errors"
 )
 
-func ReceiveBytes(bytes []byte) *Receiver {
+func NewReceiver() *Receiver {
 	r := new(Receiver)
 	return r
 }
