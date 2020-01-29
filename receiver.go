@@ -29,6 +29,8 @@ func (receiver *Receiver) Handle(bytes []byte) error {
 		return errors.New("Hash validation failed")
 	}
 	receiver.data = bytes
+
+	return nil
 }
 
 func (receiver *Receiver) ToString() string {
