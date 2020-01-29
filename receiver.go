@@ -6,8 +6,7 @@ import (
 )
 
 func NewReceiver() *Receiver {
-	r := new(Receiver)
-	return r
+	return  new(Receiver)
 }
 
 type Receiver struct {
