@@ -12,6 +12,7 @@ func NewReceiver(config Config) *Receiver {
 type Receiver struct {
 	Config Config
 	data   []byte
+	hash   string
 }
 
 func (receiver *Receiver) Handle(bytes []byte) error {
@@ -20,14 +21,10 @@ func (receiver *Receiver) Handle(bytes []byte) error {
 	if nil != err {
 		return err
 	}
-	dataString, err := json.Marshal(request.Data)
 	if nil != err {
 		return err
 	}
-	localHash := HashCalculate(string(dataString), receiver.Config.Secret)
-	if localHash != request.Hash {
-		return errors.New("Hash validation failed")
-	}
+	receiver.hash = request.Hash
 	receiver.data = bytes
 
 	return nil
@@ -39,4 +36,12 @@ func (receiver *Receiver) ToString() string {
 
 func (receiver *Receiver) ToJSON(object interface{}) error {
 	return json.Unmarshal(receiver.data, object)
+}
+
+func (receiver *Receiver) Validate() error {
+	localHash := HashCalculate(string(receiver.data), receiver.Config.Secret)
+	if localHash != receiver.hash {
+		return errors.New("Hash validation failed")
+	}
+	return nil
 }
