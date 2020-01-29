@@ -3,12 +3,10 @@ package erpc
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 )
 
 func ReceiveBytes(bytes []byte) *Receiver {
 	r := new(Receiver)
-	r.Handle(bytes)
 	return r
 }
 
@@ -25,6 +23,7 @@ func (receiver *Receiver) Configure(config Config) {
 func (receiver *Receiver) Handle(bytes []byte) error {
 	var request RequestDto
 	err := json.Unmarshal(bytes, &request)
+
 	if nil != err {
 		return err
 	}
@@ -32,7 +31,6 @@ func (receiver *Receiver) Handle(bytes []byte) error {
 		return err
 	}
 
-	fmt.Println(request)
 	receiver.hash = request.Hash
 	receiver.data = request.Data
 
