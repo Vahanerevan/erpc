@@ -8,10 +8,7 @@ import (
 	"strings"
 )
 
-type RequestDto struct {
-	Data interface{} `json:"data"`
-	Hash string      `json:"hash"`
-}
+
 
 func NewRequest(config Config) *Request {
 	return &Request{config: config}
