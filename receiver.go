@@ -5,14 +5,20 @@ import (
 	"errors"
 )
 
-func NewReceiver(config Config) *Receiver {
-	return &Receiver{Config: config}
+func ReceiveBytes(bytes []byte) *Receiver {
+	r := new(Receiver)
+	r.Handle(bytes)
+	return r
 }
 
 type Receiver struct {
 	Config Config
 	data   []byte
 	hash   string
+}
+
+func (receiver *Receiver) Configure(config Config) {
+	receiver.Config = config
 }
 
 func (receiver *Receiver) Handle(bytes []byte) error {
