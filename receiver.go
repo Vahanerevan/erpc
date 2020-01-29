@@ -13,7 +13,7 @@ func ReceiveBytes(bytes []byte) *Receiver {
 
 type Receiver struct {
 	Config Config
-	data   []byte
+	data   interface{}
 	hash   string
 }
 
@@ -31,21 +31,42 @@ func (receiver *Receiver) Handle(bytes []byte) error {
 		return err
 	}
 	receiver.hash = request.Hash
-	receiver.data = bytes
+	receiver.data = request.Data
 
 	return nil
 }
 
-func (receiver *Receiver) ToString() string {
-	return string(receiver.data)
+func (receiver *Receiver) ToString() (string, error) {
+	bytes, err := receiver.ToBytes()
+	if nil != err {
+		return "", err
+	}
+	str := string(bytes)
+	return str, nil
+}
+
+func (receiver *Receiver) ToBytes() ([]byte, error) {
+	dataString, err := json.Marshal(receiver.data)
+	if nil != err {
+		return nil, err
+	}
+	return dataString, nil
 }
 
 func (receiver *Receiver) ToJSON(object interface{}) error {
-	return json.Unmarshal(receiver.data, object)
+	str, err := receiver.ToBytes()
+	if nil != err {
+		return err
+	}
+	return json.Unmarshal(str, object)
 }
 
 func (receiver *Receiver) Validate() error {
-	localHash := HashCalculate(string(receiver.data), receiver.Config.Secret)
+	dataString, err := receiver.ToString()
+	if nil != err {
+		return err
+	}
+	localHash := HashCalculate(dataString, receiver.Config.Secret)
 	if localHash != receiver.hash {
 		return errors.New("Hash validation failed")
 	}
