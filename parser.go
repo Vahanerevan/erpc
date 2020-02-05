@@ -12,7 +12,7 @@ func NewParser() *Parser {
 type Parser struct {
 	Config Config
 	data   interface{}
-	hash   string
+	auth   string
 }
 
 func (parser *Parser) Configure(config Config) {
@@ -27,7 +27,7 @@ func (parser *Parser) Handle(bytes []byte) error {
 		return err
 	}
 
-	parser.hash = request.Auth
+	parser.auth = request.Auth
 	parser.data = request.Data
 
 	return nil
@@ -59,12 +59,7 @@ func (parser *Parser) ToJSON(object interface{}) error {
 }
 
 func (parser *Parser) Validate() error {
-	dataString, err := parser.ToString()
-	if nil != err {
-		return err
-	}
-	localHash := HashCalculate(dataString, parser.Config.Secret)
-	if localHash != parser.hash {
+	if parser.Config.Secret != parser.auth {
 		return errors.New("Hash validation failed")
 	}
 	return nil
