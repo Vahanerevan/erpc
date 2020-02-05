@@ -6,7 +6,7 @@ import (
 )
 
 func NewParser() *Parser {
-	return  new(Parser)
+	return new(Parser)
 }
 
 type Parser struct {
@@ -26,11 +26,8 @@ func (parser *Parser) Handle(bytes []byte) error {
 	if nil != err {
 		return err
 	}
-	if nil != err {
-		return err
-	}
 
-	parser.hash = request.Hash
+	parser.hash = request.Auth
 	parser.data = request.Data
 
 	return nil

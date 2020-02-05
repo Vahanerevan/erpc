@@ -1,14 +1,12 @@
 package erpc
 
 import (
-	"encoding/json"
+	//"encoding/json"
 	"errors"
 	"github.com/imroc/req"
 	"net/http"
 	"strings"
 )
-
-
 
 func NewRequest(config Config) *Request {
 	return &Request{config: config}
@@ -20,18 +18,18 @@ type Request struct {
 	config      Config
 }
 
-func (request *Request) SetRequestObject(dataObject interface{}) error {
-	bytes, err := json.Marshal(dataObject)
-	if nil != err {
-		return err
-	}
-	hash := HashCalculate(string(bytes), request.config.Secret)
+func (request *Request) SetRequestObject(dataObject interface{}) {
+	//bytes, err := json.Marshal(dataObject)
+	//if nil != err {
+	//	return err
+	//}
+	//hash := HashCalculate(string(bytes), request.config.Secret)
 
 	request.requestData = RequestDto{
 		Data: dataObject,
-		Hash: hash,
+		Auth: request.config.Secret,
 	}
-	return err
+	//return err
 }
 
 func (request *Request) Call(requestObject interface{}, path ...string) (*Response, error) {
