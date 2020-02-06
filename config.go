@@ -1,6 +1,6 @@
 package erpc
 
 type Config struct {
-	Secret string `json:"secret"`
-	URL    string `json:"url"`
+	Auth string `json:"auth"`
+	URL  string `json:"url"`
 }

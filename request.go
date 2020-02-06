@@ -19,17 +19,11 @@ type Request struct {
 }
 
 func (request *Request) SetRequestObject(dataObject interface{}) {
-	//bytes, err := json.Marshal(dataObject)
-	//if nil != err {
-	//	return err
-	//}
-	//hash := HashCalculate(string(bytes), request.config.Secret)
 
 	request.requestData = RequestDto{
 		Data: dataObject,
 		Auth: request.config.Secret,
 	}
-	//return err
 }
 
 func (request *Request) Call(requestObject interface{}, path ...string) (*Response, error) {
