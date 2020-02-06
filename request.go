@@ -22,7 +22,7 @@ func (request *Request) SetRequestObject(dataObject interface{}) {
 
 	request.requestData = RequestDto{
 		Data: dataObject,
-		Auth: request.config.Secret,
+		Auth: request.config.Auth,
 	}
 }
 
