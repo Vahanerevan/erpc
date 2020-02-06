@@ -53,4 +53,39 @@ func (request *Request) Call(requestObject interface{}, path ...string) (*Respon
 	return responseData, nil
 }
 
+func (request *Request) Action(action string, requestObject interface{}, path ...string) (*Response, error) {
+
+	request.SetRequestObject(requestObject)
+
+	mapRequest, err := ToMap(requestObject, "json")
+
+	if nil != err {
+		return nil, err
+	}
+	mapRequest["action"] = action
+	header := req.Header{
+		"Content-Type": "application/json",
+	}
+	pathList := []string{request.config.URL}
+	pathList = append(pathList, path...)
+	uri := strings.Join(pathList, "/")
+	r, err := req.Post(uri, header, req.BodyJSON(&mapRequest))
+
+	if nil != err {
+		return nil, err
+	}
+
+	resp := r.Response()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, errors.New("Response status is not 200")
+	}
+
+	responseData := &request.Resp
+	r.ToJSON(responseData)
+	responseData.Resp = r
+
+	return responseData, nil
+}
+
 func (request *Request) validate() {}
