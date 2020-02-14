@@ -1,13 +1,14 @@
 package erpc
 
 import (
-	"crypto/md5"
+	"crypto/hmac"
+	"crypto/sha1"
 	"encoding/hex"
 )
 
-func HashCalculate(data string, secret string) string {
-	text := []byte((data + secret))
-	hashCalculator := md5.New()
-	hashCalculator.Write(text)
-	return hex.EncodeToString(hashCalculator.Sum(nil))
+func HashCalculate(input []byte, secret string) string {
+	key := []byte(secret)
+	h := hmac.New(sha1.New, key)
+	h.Write(input)
+	return hex.EncodeToString(h.Sum(nil))
 }
