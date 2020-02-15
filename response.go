@@ -17,3 +17,7 @@ func (response *Response) IsOk() bool {
 func (response *Response) IsFail() bool {
 	return false == IsStatusOK(response.Status)
 }
+
+func (response *Response) BindJSON(data interface{}) error {
+	return response.ToJSON(data)
+}
