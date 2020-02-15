@@ -22,22 +22,19 @@ func ToByteString(data interface{}) ([]byte, error) {
 }
 
 type Request struct {
-	payload RequestDto
+	payload interface{}
 	Resp    Response
 	config  Config
 }
 
-func (request *Request) SetRequestObject(dataObject interface{}) {
+func (request *Request) SetPayload(dataObject interface{}) {
 
-	request.payload = RequestDto{
-		Data: dataObject,
-	}
+	request.payload = dataObject
 }
 
-func (request *Request) Action(action string, requestObject interface{}, path ...string) (*Response, error) {
+func (request *Request) Call(action string, requestObject interface{}, path ...string) (*Response, error) {
 
-	request.SetRequestObject(requestObject)
-	request.payload.Action = action
+	request.SetPayload(requestObject)
 
 	bytes, err := ToByteString(request.payload)
 
