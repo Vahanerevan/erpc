@@ -17,7 +17,7 @@ func NewRequest(config Config) *Request {
 	return &Request{config: config}
 }
 
-func ToByteString(data interface{}) ([]byte, error) {
+func ToJsonBytes(data interface{}) ([]byte, error) {
 	return json.Marshal(data)
 }
 
@@ -36,7 +36,7 @@ func (request *Request) Call(action string, requestObject interface{}, path ...s
 
 	request.SetPayload(requestObject)
 
-	bytes, err := ToByteString(request.payload)
+	bytes, err := ToJsonBytes(request.payload)
 
 	header := req.Header{
 		"Content-Type": "application/json",
@@ -71,5 +71,6 @@ func (request *Request) Call(action string, requestObject interface{}, path ...s
 
 	return responseData, nil
 }
+
 
 func (request *Request) validate() {}
