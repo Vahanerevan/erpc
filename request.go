@@ -11,7 +11,6 @@ import (
 	"strings"
 )
 
-
 func NewRequest(config Config) *Request {
 	return &Request{config: config}
 }
@@ -39,7 +38,7 @@ func (request *Request) Call(action string, requestObject interface{}, path ...s
 
 	header := req.Header{
 		"Content-Type": "application/json",
-		XAuthHash:      HashCalculate(bytes, request.config.Secret),
+		XHeader:        HashCalculate(bytes, request.config.Secret),
 	}
 
 	pathList := []string{request.config.URL, action}
@@ -70,6 +69,5 @@ func (request *Request) Call(action string, requestObject interface{}, path ...s
 
 	return responseData, nil
 }
-
 
 func (request *Request) validate() {}
