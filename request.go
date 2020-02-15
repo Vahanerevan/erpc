@@ -9,6 +9,8 @@ import (
 	"strings"
 )
 
+const XAuthHash string = "X-AuthHash"
+
 func NewRequest(config Config) *Request {
 	return &Request{config: config}
 }
@@ -63,12 +65,13 @@ func (request *Request) Action(action string, requestObject interface{}, path ..
 	request.payload.Action = action
 
 	bytes, err := ToByteString(request.payload)
+
 	header := req.Header{
 		"Content-Type": "application/json",
-		"X-AuthHash":   HashCalculate(bytes, request.config.Secret),
+		XAuthHash:      HashCalculate(bytes, request.config.Secret),
 	}
 
-	pathList := []string{request.config.URL}
+	pathList := []string{request.config.URL, action}
 
 	pathList = append(pathList, path...)
 
