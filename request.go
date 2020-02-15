@@ -11,7 +11,6 @@ import (
 	"strings"
 )
 
-const XAuthHash string = "X-AuthHash"
 
 func NewRequest(config Config) *Request {
 	return &Request{config: config}
