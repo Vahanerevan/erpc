@@ -2,12 +2,9 @@ package erpc
 
 import "github.com/imroc/req"
 
-type IStatus struct {
-	Status string `json:"status"`
-}
-
 type Response struct {
-	IStatus
+	Status  string `json:"status"`
+	Message string `json:"message"`
 	*req.Resp
 }
 

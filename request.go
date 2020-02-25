@@ -2,8 +2,6 @@ package erpc
 
 import (
 	"encoding/json"
-	"fmt"
-
 	//"encoding/json"
 	"errors"
 	"github.com/imroc/req"
@@ -47,8 +45,6 @@ func (request *Request) Call(action string, requestObject interface{}, path ...s
 
 	uri := strings.Join(pathList, "/")
 
-	fmt.Println(uri)
-
 	r, err := req.Post(uri, header, bytes)
 
 	if nil != err {
@@ -64,9 +60,9 @@ func (request *Request) Call(action string, requestObject interface{}, path ...s
 	responseData := &request.Resp
 
 	r.ToJSON(responseData)
-
-	responseData.Resp = r
-
+	if responseData.IsFail() {
+		return nil, errors.New(responseData.Message)
+	}
 	return responseData, nil
 }
 
