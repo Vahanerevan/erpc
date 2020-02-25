@@ -2,8 +2,8 @@ package erpc
 
 import (
 	"encoding/json"
-	//"encoding/json"
 	"errors"
+	"fmt"
 	"github.com/imroc/req"
 	"net/http"
 	"strings"
@@ -19,8 +19,8 @@ func ToJsonBytes(data interface{}) ([]byte, error) {
 
 type Request struct {
 	payload interface{}
-	*req.Req
-	config Config
+	req.Req
+	config  Config
 }
 
 func (request *Request) SetPayload(dataObject interface{}) {
@@ -34,6 +34,9 @@ func (request *Request) Call(action string, requestObject interface{}, path ...s
 
 	bytes, err := ToJsonBytes(request.payload)
 
+	if nil != err {
+		return nil, err
+	}
 	header := req.Header{
 		"Content-Type": "application/json",
 		XHeader:        HashCalculate(bytes, request.config.Secret),
@@ -44,7 +47,7 @@ func (request *Request) Call(action string, requestObject interface{}, path ...s
 	pathList = append(pathList, path...)
 
 	uri := strings.Join(pathList, "/")
-
+	fmt.Println(uri, header, string(bytes))
 	resp, err := request.Post(uri, header, bytes)
 
 	if nil != err {
