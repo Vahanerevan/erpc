@@ -3,9 +3,9 @@ package erpc
 import "github.com/imroc/req"
 
 type Response struct {
+	*req.Resp
 	Status  string `json:"status"`
 	Message string `json:"message"`
-	*req.Resp
 }
 
 func (response *Response) IsOk() bool {

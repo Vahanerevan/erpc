@@ -19,8 +19,8 @@ func ToJsonBytes(data interface{}) ([]byte, error) {
 
 type Request struct {
 	payload interface{}
-	Resp    Response
-	config  Config
+	*req.Req
+	config Config
 }
 
 func (request *Request) SetPayload(dataObject interface{}) {
@@ -45,21 +45,22 @@ func (request *Request) Call(action string, requestObject interface{}, path ...s
 
 	uri := strings.Join(pathList, "/")
 
-	r, err := req.Post(uri, header, bytes)
+	resp, err := request.Post(uri, header, bytes)
 
 	if nil != err {
 		return nil, err
 	}
 
-	resp := r.Response()
+	httpResp := resp.Response()
 
-	if resp.StatusCode != http.StatusOK {
+	if httpResp.StatusCode != http.StatusOK {
 		return nil, errors.New("Response status is not 200")
 	}
 
-	responseData := &request.Resp
+	responseData := &Response{Resp: resp}
 
-	r.ToJSON(responseData)
+	resp.ToJSON(responseData)
+
 	if responseData.IsFail() {
 		return nil, errors.New(responseData.Message)
 	}
