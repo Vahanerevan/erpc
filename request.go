@@ -20,7 +20,7 @@ func ToJsonBytes(data interface{}) ([]byte, error) {
 type Request struct {
 	payload interface{}
 	req.Req
-	config  Config
+	config Config
 }
 
 func (request *Request) SetPayload(dataObject interface{}) {
@@ -47,7 +47,11 @@ func (request *Request) Call(action string, requestObject interface{}, path ...s
 	pathList = append(pathList, path...)
 
 	uri := strings.Join(pathList, "/")
-	fmt.Println(uri, header, string(bytes))
+
+	if request.config.Debug {
+		fmt.Println(uri, header, string(bytes))
+	}
+
 	resp, err := request.Post(uri, header, bytes)
 
 	if nil != err {
@@ -65,6 +69,13 @@ func (request *Request) Call(action string, requestObject interface{}, path ...s
 	resp.ToJSON(responseData)
 
 	if responseData.IsFail() {
+
+		switch responseData.Code {
+		case ErrorCodeHash:
+			return nil, ErrInvalidHash
+		case ErrorCodeGeneral:
+			return nil, errors.New(responseData.Message)
+		}
 		return nil, errors.New(responseData.Message)
 	}
 	return responseData, nil

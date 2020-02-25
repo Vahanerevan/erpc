@@ -6,7 +6,12 @@ const StatusOK = "OK"
 const StatusFAIL = "FAIL"
 const XHeader string = "X-Auth"
 
-var ErrorWrongHash = errors.New("Wrong Hash")
+const (
+	ErrorCodeHash    int = 501
+	ErrorCodeGeneral     = 505
+)
+
+var ErrInvalidHash = errors.New("Invalid Hash")
 
 func IsStatusOK(status string) bool {
 	return status == StatusOK

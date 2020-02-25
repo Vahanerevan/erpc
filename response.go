@@ -5,6 +5,7 @@ import "github.com/imroc/req"
 type Response struct {
 	*req.Resp
 	Status  string `json:"status"`
+	Code    int    `json:"code"`
 	Message string `json:"message"`
 }
 
