@@ -73,8 +73,8 @@ func (request *Request) Call(action string, requestObject interface{}, path ...s
 		switch responseData.Code {
 		case ErrorCodeHash:
 			return nil, ErrInvalidHash
-		case ErrorCodeGeneral:
-			return nil, errors.New(responseData.Message)
+		//case ErrorCodeGeneral:
+		//	return nil, errors.New(responseData.Message)
 		}
 		return nil, errors.New(responseData.Message)
 	}
