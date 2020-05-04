@@ -2,8 +2,11 @@ package erpc
 
 import "errors"
 
-const StatusOK = "OK"
-const StatusFAIL = "FAIL"
+type Status string
+
+const StatusOK Status = "OK"
+const StatusFAIL Status = "FAIL"
+
 const AuthHeader string = "X-Auth"
 
 const (
@@ -13,7 +16,7 @@ const (
 
 var ErrInvalidHash = errors.New("Invalid Hash")
 
-func IsStatusOK(status string) bool {
+func IsStatusOK(status Status) bool {
 	return status == StatusOK
 }
 

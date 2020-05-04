@@ -66,6 +66,7 @@ func (request *Request) Call(action string, requestObject interface{}, path ...s
 
 	responseData := &Response{Resp: resp}
 
+
 	err = resp.ToJSON(responseData)
 
 	if nil != err {
@@ -73,7 +74,6 @@ func (request *Request) Call(action string, requestObject interface{}, path ...s
 	}
 
 	if responseData.IsFail() {
-
 		switch responseData.Code {
 		case ErrorCodeHash:
 			return nil, ErrInvalidHash
