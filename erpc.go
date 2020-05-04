@@ -4,7 +4,7 @@ import "errors"
 
 const StatusOK = "OK"
 const StatusFAIL = "FAIL"
-const XHeader string = "X-Auth"
+const AuthHeader string = "X-Auth"
 
 const (
 	ErrorCodeHash    int = 501

@@ -39,7 +39,7 @@ func (request *Request) Call(action string, requestObject interface{}, path ...s
 	}
 	header := req.Header{
 		"Content-Type": "application/json",
-		XHeader:        HashCalculate(bytes, request.config.Secret),
+		AuthHeader:     HashCalculate(bytes, request.config.Secret),
 	}
 
 	pathList := []string{request.config.URL, action}
@@ -61,22 +61,24 @@ func (request *Request) Call(action string, requestObject interface{}, path ...s
 	httpResp := resp.Response()
 
 	if httpResp.StatusCode != http.StatusOK {
-		return nil, errors.New("Response status is not 200")
+		return nil, errors.New("response status is not 200")
 	}
 
 	responseData := &Response{Resp: resp}
 
-	resp.ToJSON(responseData)
+	err = resp.ToJSON(responseData)
+
+	if nil != err {
+		return nil, err
+	}
 
 	if responseData.IsFail() {
 
 		switch responseData.Code {
 		case ErrorCodeHash:
 			return nil, ErrInvalidHash
-		//case ErrorCodeGeneral:
-		//	return nil, errors.New(responseData.Message)
 		}
-		return nil, errors.New(responseData.Message)
+		return nil, errors.New("Status undefined"+responseData.Message)
 	}
 	return responseData, nil
 }
